@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gestor de Escala Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            /* Paleta de cores inspirada em Material Design modernos */
+            --md-sys-color-primary: #0061A4;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #D1E4FF;
+            --md-sys-color-on-primary-container: #001D36;
+            
+            --md-sys-color-secondary: #535F70;
+            --md-sys-color-on-secondary: #FFFFFF;
+            
+            --md-sys-color-error: #BA1A1A;
+            --md-sys-color-on-error: #FFFFFF;
+            
+            --md-sys-color-background: #FDFCFF;
+            --md-sys-color-on-background: #1A1C1E;
+            --md-sys-color-surface: #FDFCFF;
+            --md-sys-color-surface-variant: #DFE2EB;
+            --md-sys-color-on-surface: #1A1C1E;
+            --md-sys-color-on-surface-variant: #43474E;
+            --md-sys-color-outline: #73777F;
+
+            /* Cor Oficial do Mercado Pago para o botão de contribuição */
+            --mercadopago-color: #009EE3;
+
+            /* Visual original da imagem (Amarelo) mantido como destaque */
+            --legacy-yellow: #FEF08A;
+
+            /* Definições de fonte */
+            --font-family: 'Plus Jakarta Sans', sans-serif;
+            --font-size-base: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            background-color: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            padding: 16px;
+            padding-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 12px 0;
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--md-sys-color-primary);
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 14px;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        /* Botão de Contribuição Mercado Pago */
+        .contrib-link {
+            text-decoration: none;
+            display: block;
+            margin-bottom: 24px;
+        }
+
+        .btn-contrib {
+            width: 100%;
+            background-color: var(--mercadopago-color);
+            color: white;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0, 158, 227, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-contrib:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 6px rgba(0, 158, 227, 0.15);
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--md-sys-color-on-background);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .collapsible-header {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+        }
+
+        .collapsible-header div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chevron-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .collapsed .chevron-icon {
+            transform: rotate(-90deg);
+        }
+
+        .card {
+            background-color: var(--md-sys-color-surface);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--md-sys-color-surface-variant);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* Área específica para captura limpa da imagem */
+        .capture-area {
+            background-color: var(--md-sys-color-surface);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .history-content-wrapper {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, margin-top 0.3s;
+            margin-top: 16px;
+        }
+
+        .collapsed + .history-content-wrapper {
+            max-height: 0;
+            margin-top: 0;
+        }
+
+        .history-top-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            font-family: var(--font-family);
+            font-size: 16px;
+            padding: 14px 16px;
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 8px;
+            background-color: transparent;
+            color: var(--md-sys-color-on-surface);
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--md-sys-color-primary);
+            border-width: 2px;
+            padding: 13px 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+
+        button {
+            font-family: var(--font-family);
+            font-size: 15px;
+            font-weight: 600;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: box-shadow 0.2s, background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-group button {
+            flex: 1;
+        }
+
+        button:active {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn-filled {
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+        }
+
+        .btn-filled:hover {
+            box-shadow: 0 2px 8px rgba(0,97,164,0.3);
+        }
+
+        .btn-share {
+            background-color: #E8F0FE;
+            color: var(--md-sys-color-primary);
+            width: 100%;
+            margin-top: 16px;
+            border: 1px dashed var(--md-sys-color-primary);
+        }
+
+        .btn-share:hover {
+            background-color: #D1E4FF;
+        }
+
+        .btn-tonal {
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+        }
+
+        .btn-text-danger {
+            background-color: transparent;
+            color: var(--md-sys-color-error);
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 100px;
+        }
+
+        .btn-text-danger:hover {
+            background-color: #ffdad9;
+        }
+
+        .btn-outline-danger {
+            background-color: transparent;
+            color: var(--md-sys-color-error);
+            border: 1px solid var(--md-sys-color-error);
+            padding: 6px 16px;
+            font-size: 13px;
+            border-radius: 100px;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #ffdad9;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--md-sys-color-surface-variant);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 300px;
+        }
+
+        th {
+            background-color: #F1F3F8;
+            color: var(--md-sys-color-on-surface-variant);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--md-sys-color-surface-variant);
+        }
+
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #F1F3F8;
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tarefa-cell {
+            background-color: var(--legacy-yellow);
+            font-weight: 600;
+            color: #1A1C1E;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-size: 14px;
+            display: block;
+        }
+
+        table select {
+            padding: 10px 12px;
+            font-size: 15px;
+            border-color: #E0E0E0;
+        }
+
+        /* Estilo para simular o texto selecionado na imagem final gerada */
+        .select-print-value {
+            display: none;
+            font-weight: 600;
+            padding: 10px 12px;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        /* Classe especial aplicada temporariamente durante o print */
+        .printing-mode select { display: none; }
+        .printing-mode .select-print-value { display: block; }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background-color: #F8F9FC;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid #F1F3F8;
+        }
+
+        .history-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ECEFF1;
+        }
+
+        .history-date {
+            font-size: 13px;
+            color: var(--md-sys-color-on-surface-variant);
+            font-weight: 500;
+        }
+
+        .history-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .history-data {
+            font-size: 15px;
+        }
+
+        .history-op {
+            font-weight: 600;
+            color: var(--md-sys-color-on-background);
+        }
+
+        .history-arrow {
+            color: var(--md-sys-color-outline);
+            margin: 0 4px;
+        }
+
+        .history-task {
+            font-weight: 600;
+            color: var(--md-sys-color-primary);
+            background-color: #E3F2FD;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 13px;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Gestor de Escala</h1>
+        <p>Distribuição de Tarefas Operacionais</p>
+    </header>
+
+    <a href="https://mpago.la/21G5Sgn" target="_blank" class="contrib-link">
+        <button class="btn-contrib">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            Apoie este Projeto via Mercado Pago
+        </button>
+    </a>
+    <section class="card">
+        <h2>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg>
+            Configurar Turno
+        </h2>
+        <div class="form-row">
+            <div class="input-group">
+                <label for="dataEscala">Data</label>
+                <input type="date" id="dataEscala">
+            </div>
+            <div class="input-group">
+                <label for="horarioEscala">Horário de Início</label>
+                <input type="time" id="horarioEscala" value="06:00">
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn-tonal" onclick="gerarEscalaAutomatica()">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M7 11V7.69L8.69 6H11v4H7zm10 0V7.69L15.31 6H13v4h4zm-6 10v-4H7v3.31L8.69 21H11zm6 0v-4h-4v4h2.31L17 21zM5 19V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2zM19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                Distribuir Aleatório
+            </button>
+            <button class="btn-filled" onclick="gerarEscalaManual()">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6V6z"/></svg>
+                Salvar Escala Atual
+            </button>
+        </div>
+    </section>
+
+    <section class="card">
+        <div id="areaCompartilhar" class="capture-area">
+            <h2>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                Mapa de Atividades do Dia
+            </h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;">Tarefa (Posto)</th>
+                            <th style="width: 55%;">Operador Designado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaEscala">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <button class="btn-share" onclick="compartilharComoImagem()">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+            Compartilhar como Imagem
+        </button>
+    </section>
+
+    <section class="card" style="padding-bottom: 16px;">
+        <h2 class="collapsible-header" id="historicoTitulo" onclick="alternarHistorico()">
+            <div>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                <span>Linha do Tempo</span>
+            </div>
+            <svg class="icon chevron-icon" viewBox="0 0 24 24" style="width:24px; height:24px;"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+        </h2>
+        
+        <div class="history-content-wrapper">
+            <div class="history-top-bar">
+                <button class="btn-outline-danger" onclick="limparHistoricoTodo()">
+                    <svg class="icon" style="width:14px; height:14px;" viewBox="0 0 24 24"><path d="M15 4V3H9v1H4v2h16V4h-5zM6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12z"/></svg>
+                    Limpar Tudo
+                </button>
+            </div>
+            <div class="history-list" id="listaHistorico">
+                </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    const tarefasFixas = [
+        "CARREGAMENTO 1°",
+        "JOKER",
+        "PATOLA",
+        "PATOLA",
+        "NT",
+        "PUXADA PERIFERICO",
+        "PUXADA DEDICADO"
+    ];
+
+    const operadoresPadrao = [
+        "NUBIA",
+        "RYAN",
+        "MARQUINHO",
+        "LEANDRO",
+        "ANDREA",
+        "MARCAO",
+        "JAMIL"
+    ];
+
+    document.getElementById('dataEscala').valueAsDate = new Date();
+
+    window.onload = function() {
+        renderizarTabelaBase();
+        carregarHistorico();
+    };
+
+    function renderizarTabelaBase() {
+        const tbody = document.getElementById('tabelaEscala');
+        tbody.innerHTML = "";
+
+        tarefasFixas.forEach((tarefa, index) => {
+            let options = `<option value="">-- Selecione Operador --</option>`;
+            [...operadoresPadrao].sort().forEach(op => {
+                options += `<option value="${op}">${op}</option>`;
+            });
+
+            tbody.innerHTML += `
+                <tr>
+                    <td><span class="tarefa-cell">${tarefa}</span></td>
+                    <td>
+                        <select id="select-tarefa-${index}" onchange="atualizarTextoPrint(${index})">
+                            ${options}
+                        </select>
+                        <div id="print-text-${index}" class="select-print-value"></div>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // Atualiza a div oculta que simula o texto no momento do print
+    function atualizarTextoPrint(index) {
+        const select = document.getElementById(`select-tarefa-${index}`);
+        const printText = document.getElementById(`print-text-${index}`);
+        printText.textContent = select.value || "Não designado";
+    }
+
+    function gerarEscalaAutomatica() {
+        let BluePrint = [...operadoresPadrao].sort(() => Math.random() - 0.5);
+        tarefasFixas.forEach((tarefa, index) => {
+            const select = document.getElementById(`select-tarefa-${index}`);
+            if (select) {
+                select.value = BluePrint[index] || "";
+                atualizarTextoPrint(index);
+            }
+        });
+    }
+
+    function gerarEscalaManual() {
+        const data = document.getElementById('dataEscala').value;
+        const horario = document.getElementById('horarioEscala').value;
+
+        if (!data || !horario) {
+            alert("Por favor, preencha data e horário do turno.");
+            return;
+        }
+
+        const dataFormatada = data.split('-').reverse().join('/');
+        let registros = carregarDadosStorage();
+        let contagemValida = 0;
+
+        tarefasFixas.forEach((tarefa, index) => {
+            const select = document.getElementById(`select-tarefa-${index}`);
+            const operador = select.value;
+
+            if (operador) {
+                contagemValida++;
+                registros.push({
+                    id: Date.now() + Math.random(),
+                    timeStamp: Date.now(),
+                    data: dataFormatada,
+                    horario: horario,
+                    tarefa: tarefa,
+                    operador: operador
+                });
+            }
+        });
+
+        if (contagemValida === 0) {
+            alert("Selecione pelo menos um operador antes de salvar.");
+            return;
+        }
+
+        salvarDadosStorage(registros);
+        carregarHistorico();
+        alert("Escala registrada na Linha do Tempo.");
+    }
+
+    // NOVA FUNÇÃO: COMPARTILHAR COMO IMAGEM (MOBILE FRIENDLY)
+    function compartilharComoImagem() {
+        const alvo = document.getElementById('areaCompartilhar');
+        
+        // Garante que o texto selecionado apareça bem no print ao invés de uma caixa cinza de select
+        tarefasFixas.forEach((_, index) => atualizarTextoPrint(index));
+        alvo.classList.add('printing-mode');
+
+        // Renderiza o card em uma imagem limpa
+        html2canvas(alvo, {
+            backgroundColor: "#FDFCFF",
+            scale: 2 // Melhora a qualidade da imagem
+        }).then(canvas => {
+            alvo.classList.remove('printing-mode');
+            
+            canvas.toBlob(blob => {
+                const data = document.getElementById('dataEscala').value;
+                const dataFormatada = data ? data.split('-').reverse().join('-') : 'escala';
+                const arquivo = new File([blob], `escala-${dataFormatada}.png`, { type: 'image/png' });
+
+                // Verifica se o navegador/celular suporta o compartilhamento direto de arquivos
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [arquivo] })) {
+                    navigator.share({
+                        files: [arquivo],
+                        title: 'Mapa de Atividades',
+                        text: `Segue escala do dia.`
+                    }).catch(err => console.log("Compartilhamento cancelado"));
+                } else {
+                    // Fallback para caso o navegador bloqueie: Faz o download direto da imagem
+                    const link = document.createElement('a');
+                    link.download = `escala-${dataFormatada}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    alert("Seu navegador não suporta compartilhamento direto. A imagem foi salva nos seus Downloads!");
+                }
+            }, 'image/png');
+        });
+    }
+
+    function carregarDadosStorage() {
+        const dados = localStorage.getItem('historicoEscalaPlayStore');
+        return dados ? JSON.parse(dados) : [];
+    }
+
+    function salvarDadosStorage(dados) {
+        localStorage.setItem('historicoEscalaPlayStore', JSON.stringify(dados));
+    }
+
+    function carregarHistorico() {
+        const lista = document.getElementById('listaHistorico');
+        const registros = carregarDadosStorage();
+
+        if (registros.length === 0) {
+            lista.innerHTML = `<p style="text-align:center; color:var(--md-sys-color-on-surface-variant); padding:24px 0; font-size:14px;">O histórico está vazio.</p>`;
+            return;
+        }
+
+        registros.sort((a,b) => b.timeStamp - a.timeStamp);
+
+        lista.innerHTML = "";
+        registros.forEach(reg => {
+            lista.innerHTML += `
+                <div class="history-item">
+                    <div class="history-meta">
+                        <span class="history-date">${reg.data} • Turno ${reg.horario}</span>
+                        <button class="btn-text-danger" onclick="deletarRegistro(${reg.id})">
+                             <svg class="icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                             Excluir
+                        </button>
+                    </div>
+                    <div class="history-content">
+                        <div class="history-data">
+                            <span class="history-op">${reg.operador}</span>
+                            <span class="history-arrow">➡️</span>
+                            <span class="history-task">${reg.tarefa}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function deletarRegistro(id) {
+        if (confirm("Deseja remover esta designação do histórico?")) {
+            let registros = carregarDadosStorage();
+            registros = registros.filter(reg => reg.id !== id);
+            salvarDadosStorage(registros);
+            carregarHistorico();
+        }
+    }
+
+    function limparHistoricoTodo() {
+        if (confirm("⚠️ ATENÇÃO: Deseja apagar TODO o histórico de escalas? Esta ação não pode ser desfeita.")) {
+            salvarDadosStorage([]);
+            carregarHistorico();
+        }
+    }
+
+    function alternarHistorico() {
+        const titulo = document.getElementById('historicoTitulo');
+        titulo.classList.toggle('collapsed');
+    }
+</script>
+
+</body>
+</html>
