@@ -159,7 +159,7 @@
         }
 
         .history-content-wrapper {
-            max-height: 1000px;
+            max-height: 4000px;
             overflow: hidden;
             transition: max-height 0.3s ease-in-out, margin-top 0.3s;
             margin-top: 16px;
@@ -354,7 +354,6 @@
             border-color: #E0E0E0;
         }
 
-        /* Estilo para simular o texto selecionado na imagem final gerada */
         .select-print-value {
             display: none;
             font-weight: 600;
@@ -362,70 +361,155 @@
             color: var(--md-sys-color-on-surface);
         }
 
-        /* Classe especial aplicada temporariamente durante o print */
         .printing-mode select { display: none; }
         .printing-mode .select-print-value { display: block; }
+
+        /* ESTILOS PARA O AGRUPAMENTO DIÁRIO */
+        .day-group {
+            border: 1px solid var(--md-sys-color-surface-variant);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            background-color: #FDFCFF;
+        }
+
+        .day-header {
+            background-color: #F1F3F8;
+            padding: 12px 16px;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--md-sys-color-primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .day-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.25s ease-out;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 0 12px;
+        }
+
+        .day-group.open .day-content {
+            max-height: 3500px;
+            padding: 12px;
+        }
+
+        .day-chevron {
+            transition: transform 0.2s;
+        }
+
+        .day-group.open .day-chevron {
+            transform: rotate(180deg);
+        }
 
         .history-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            max-height: 400px;
-            overflow-y: auto;
+            gap: 8px;
+            max-height: 650px;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            padding-right: 4px;
         }
 
+        /* CARD DE TURNO INDIVIDUAL EXPANSÍVEL (MODIFICADO) */
         .history-item {
             background-color: #F8F9FC;
             border-radius: 12px;
-            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            border: 1px solid #F1F3F8;
+            border: 1px solid #ECEFF1;
+            overflow: hidden;
+        }
+
+        /* Cabeçalho do Turno clicável */
+        .history-item-header {
+            padding: 12px 14px;
+            background-color: #FFFFFF;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            border-bottom: 1px solid transparent;
+            transition: background-color 0.2s;
+        }
+
+        .history-item.open .history-item-header {
+            border-bottom-color: #ECEFF1;
+            background-color: #F1F5F9;
+        }
+
+        .history-item-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.25s ease-out;
+            padding: 0 14px;
+        }
+
+        .history-item.open .history-item-content {
+            max-height: 800px;
+            padding: 14px;
+        }
+
+        .turn-chevron {
+            transition: transform 0.2s;
+        }
+
+        .history-item.open .turn-chevron {
+            transform: rotate(180deg);
         }
 
         .history-meta {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #ECEFF1;
+            gap: 8px;
         }
 
         .history-date {
-            font-size: 13px;
-            color: var(--md-sys-color-on-surface-variant);
-            font-weight: 500;
-        }
-
-        .history-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .history-data {
-            font-size: 15px;
-        }
-
-        .history-op {
-            font-weight: 600;
+            font-size: 14px;
             color: var(--md-sys-color-on-background);
+            font-weight: 700;
         }
 
-        .history-arrow {
-            color: var(--md-sys-color-outline);
-            margin: 0 4px;
+        .history-table-view {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        .history-task {
+        .history-row-view {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            padding: 6px 0;
+            border-bottom: 1px dashed #E0E0E0;
+            align-items: center;
+        }
+
+        .history-row-view:last-child {
+            border-bottom: none;
+        }
+
+        .history-label-task {
+            font-size: 12px;
             font-weight: 600;
-            color: var(--md-sys-color-primary);
-            background-color: #E3F2FD;
+            color: #1A1C1E;
+            background-color: var(--legacy-yellow);
             padding: 4px 10px;
-            border-radius: 100px;
-            font-size: 13px;
+            border-radius: 4px;
+        }
+
+        .history-label-op {
+            font-weight: 600;
+            color: var(--md-sys-color-on-surface);
         }
 
         .icon {
@@ -436,8 +520,7 @@
     </style>
 </head>
 <body>
-
-<div class="container">
+    <div class="container">
 
     <header>
         <h1>Gestor de Escala</h1>
@@ -450,6 +533,7 @@
             Apoie este Projeto via Mercado Pago
         </button>
     </a>
+
     <section class="card">
         <h2>
             <svg class="icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg>
@@ -525,9 +609,8 @@
         </div>
     </section>
 
-</div>
-
-<script>
+    </div>
+    <script>
     const tarefasFixas = [
         "CARREGAMENTO 1°",
         "JOKER",
@@ -579,7 +662,6 @@
         });
     }
 
-    // Atualiza a div oculta que simula o texto no momento do print
     function atualizarTextoPrint(index) {
         const select = document.getElementById(`select-tarefa-${index}`);
         const printText = document.getElementById(`print-text-${index}`);
@@ -587,11 +669,12 @@
     }
 
     function gerarEscalaAutomatica() {
-        let BluePrint = [...operadoresPadrao].sort(() => Math.random() - 0.5);
+        let operadoresEmbaralhados = [...operadoresPadrao].sort(() => Math.random() - 0.5);
+        
         tarefasFixas.forEach((tarefa, index) => {
             const select = document.getElementById(`select-tarefa-${index}`);
             if (select) {
-                select.value = BluePrint[index] || "";
+                select.value = operadoresEmbaralhados[index] || "";
                 atualizarTextoPrint(index);
             }
         });
@@ -608,56 +691,51 @@
 
         const dataFormatada = data.split('-').reverse().join('/');
         let registros = carregarDadosStorage();
-        let contagemValida = 0;
-
+        
+        let designacoesDoTurno = [];
         tarefasFixas.forEach((tarefa, index) => {
             const select = document.getElementById(`select-tarefa-${index}`);
-            const operador = select.value;
-
-            if (operador) {
-                contagemValida++;
-                registros.push({
-                    id: Date.now() + Math.random(),
-                    timeStamp: Date.now(),
-                    data: dataFormatada,
-                    horario: horario,
-                    tarefa: tarefa,
-                    operador: operador
-                });
+            if (select) {
+                const operador = select.value;
+                if (operador) {
+                    designacoesDoTurno.push({ tarefa: tarefa, operador: operador });
+                }
             }
         });
 
-        if (contagemValida === 0) {
+        if (designacoesDoTurno.length === 0) {
             alert("Selecione pelo menos um operador antes de salvar.");
             return;
         }
 
+        registros.push({
+            id: Date.now(),
+            timeStamp: Date.now(),
+            data: dataFormatada,
+            horario: horario,
+            escalaCompleta: designacoesDoTurno
+        });
+
         salvarDadosStorage(registros);
         carregarHistorico();
-        alert("Escala registrada na Linha do Tempo.");
+        alert("Turno completo registrado na Linha do Tempo.");
     }
 
-    // NOVA FUNÇÃO: COMPARTILHAR COMO IMAGEM (MOBILE FRIENDLY)
     function compartilharComoImagem() {
         const alvo = document.getElementById('areaCompartilhar');
-        
-        // Garante que o texto selecionado apareça bem no print ao invés de uma caixa cinza de select
         tarefasFixas.forEach((_, index) => atualizarTextoPrint(index));
         alvo.classList.add('printing-mode');
 
-        // Renderiza o card em uma imagem limpa
         html2canvas(alvo, {
             backgroundColor: "#FDFCFF",
-            scale: 2 // Melhora a qualidade da imagem
+            scale: 2
         }).then(canvas => {
             alvo.classList.remove('printing-mode');
-            
             canvas.toBlob(blob => {
                 const data = document.getElementById('dataEscala').value;
                 const dataFormatada = data ? data.split('-').reverse().join('-') : 'escala';
                 const arquivo = new File([blob], `escala-${dataFormatada}.png`, { type: 'image/png' });
 
-                // Verifica se o navegador/celular suporta o compartilhamento direto de arquivos
                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [arquivo] })) {
                     navigator.share({
                         files: [arquivo],
@@ -665,7 +743,6 @@
                         text: `Segue escala do dia.`
                     }).catch(err => console.log("Compartilhamento cancelado"));
                 } else {
-                    // Fallback para caso o navegador bloqueie: Faz o download direto da imagem
                     const link = document.createElement('a');
                     link.download = `escala-${dataFormatada}.png`;
                     link.href = canvas.toDataURL('image/png');
@@ -696,31 +773,98 @@
 
         registros.sort((a,b) => b.timeStamp - a.timeStamp);
 
-        lista.innerHTML = "";
+        const gruposPorDia = {};
         registros.forEach(reg => {
-            lista.innerHTML += `
-                <div class="history-item">
-                    <div class="history-meta">
-                        <span class="history-date">${reg.data} • Turno ${reg.horario}</span>
-                        <button class="btn-text-danger" onclick="deletarRegistro(${reg.id})">
-                             <svg class="icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                             Excluir
-                        </button>
-                    </div>
-                    <div class="history-content">
-                        <div class="history-data">
-                            <span class="history-op">${reg.operador}</span>
-                            <span class="history-arrow">➡️</span>
-                            <span class="history-task">${reg.tarefa}</span>
+            if (!gruposPorDia[reg.data]) {
+                gruposPorDia[reg.data] = [];
+            }
+            gruposPorDia[reg.data].push(reg);
+        });
+
+        lista.innerHTML = "";
+
+        Object.keys(gruposPorDia).forEach(dia => {
+            let turnosDoDiaHtml = "";
+            
+            gruposPorDia[dia].forEach(reg => {
+                let linesTableHtml = "";
+                let listaDePostos = reg.escalaCompleta || [{ tarefa: reg.tarefa, operador: reg.operador }];
+
+                listaDePostos.forEach(item => {
+                    linesTableHtml += `
+                        <div class="history-row-view">
+                            <span class="history-label-task">${item.tarefa}</span>
+                            <span class="history-label-op">${item.operador}</span>
                         </div>
+                    `;
+                });
+
+                // CADA TURNO AGORA É UM BLOCO INDIVIDUAL RETRÁTIL (.history-item)
+                turnosDoDiaHtml += `
+                    <div class="history-item" id="turno-${reg.id}">
+                        <div class="history-item-header" onclick="alternarTurno('${reg.id}')">
+                            <div class="history-meta">
+                                <span class="history-date">⏰ Turno das ${reg.horario}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <button class="btn-text-danger" style="padding:4px 8px; font-size:12px;" onclick="event.stopPropagation(); deletarRegistro(${reg.id})">
+                                     Excluir
+                                </button>
+                                <svg class="icon turn-chevron" viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                            </div>
+                        </div>
+                        <div class="history-item-content">
+                            <div class="history-table-view">
+                                ${linesTableHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const idUnicaDia = dia.replace(/\//g, '-');
+
+            lista.innerHTML += `
+                <div class="day-group" id="grupo-${idUnicaDia}">
+                    <div class="day-header" onclick="alternarDia('${idUnicaDia}')">
+                        <span>📅 ${dia} (${gruposPorDia[dia].length} Turno(s))</span>
+                        <svg class="icon day-chevron" viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                    </div>
+                    <div class="day-content">
+                        ${turnosDoDiaHtml}
                     </div>
                 </div>
             `;
         });
     }
 
+    function alternarDia(diaId) {
+        const containerDia = document.getElementById(`grupo-${diaId}`);
+        if (containerDia) {
+            containerDia.classList.toggle('open');
+            if (containerDia.classList.contains('open')) {
+                setTimeout(() => {
+                    containerDia.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 280);
+            }
+        }
+    }
+
+    // NOVA FUNÇÃO: Abre e fecha a escalação de cada turno individual e centraliza suavemente a visualização
+    function alternarTurno(turnoId) {
+        const blocoTurno = document.getElementById(`turno-${turnoId}`);
+        if (blocoTurno) {
+            blocoTurno.classList.toggle('open');
+            if (blocoTurno.classList.contains('open')) {
+                setTimeout(() => {
+                    blocoTurno.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 280);
+            }
+        }
+    }
+
     function deletarRegistro(id) {
-        if (confirm("Deseja remover esta designação do histórico?")) {
+        if (confirm("Deseja remover este turno inteiro do histórico?")) {
             let registros = carregarDadosStorage();
             registros = registros.filter(reg => reg.id !== id);
             salvarDadosStorage(registros);
@@ -743,3 +887,4 @@
 
 </body>
 </html>
+
