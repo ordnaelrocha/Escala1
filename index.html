@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gestor de Escala Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             /* Paleta de cores inspirada em Material Design modernos */
@@ -300,31 +299,18 @@
             box-shadow: 0 2px 8px rgba(0,97,164,0.3);
         }
 
+        /* Botão de Compartilhar Destacado e Lindo */
         .btn-share {
-            background-color: #E8F0FE;
-            color: var(--md-sys-color-primary);
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
             width: 100%;
             margin-top: 16px;
-            border: 1px dashed var(--md-sys-color-primary);
             font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0, 97, 164, 0.2);
         }
 
         .btn-share:hover {
-            background-color: #D1E4FF;
-        }
-
-        /* Estilo do botão de download de segurança alternativo */
-        .btn-download-fallback {
-            background-color: #2e7d32;
-            color: white;
-            width: 100%;
-            margin-top: 10px;
-            display: none;
-            font-size: 16px;
-        }
-
-        .btn-download-fallback:hover {
-            background-color: #1b5e20;
+            background-color: #004f87;
         }
 
         .btn-tonal {
@@ -348,7 +334,7 @@
         .btn-outline-danger {
             background-color: transparent;
             color: var(--md-sys-color-error);
-            border: 1px solid var(--md-sys-error);
+            border: 1px solid var(--md-sys-color-error);
             padding: 6px 16px;
             font-size: 13.5px;
             font-weight: 700;
@@ -409,18 +395,6 @@
             font-weight: 600;
             border-color: #D0D4DC;
         }
-
-        .select-print-value {
-            display: none;
-            font-weight: 700;
-            font-size: 16px;
-            padding: 10px 12px;
-            color: var(--md-sys-color-on-surface);
-            letter-spacing: -0.2px;
-        }
-
-        .printing-mode select { display: none; }
-        .printing-mode .select-print-value { display: block; }
 
         /* ESTILOS PARA O AGRUPAMENTO DIÁRIO */
         .day-group {
@@ -648,15 +622,8 @@
 
         <button class="btn-share" onclick="compartilharComoImagem()">
             <svg class="icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-            Compartilhar Escala
+            Compartilhar Escala (SVG)
         </button>
-
-        <a id="linkDownloadAlternativo" style="text-decoration:none;" download="escala.png">
-            <button id="btnDownloadAlternativo" class="btn-download-fallback">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
-                Baixar Imagem na Galeria
-            </button>
-        </a>
     </section>
 
     <section class="card" style="padding-bottom: 16px;">
@@ -723,20 +690,13 @@
                 <tr>
                     <td><span class="tarefa-cell">${tarefa}</span></td>
                     <td>
-                        <select id="select-tarefa-${index}" onchange="atualizarTextoPrint(${index})">
+                        <select id="select-tarefa-${index}">
                             ${options}
                         </select>
-                        <div id="print-text-${index}" class="select-print-value"></div>
                     </td>
                 </tr>
             `;
         });
-    }
-
-    function atualizarTextoPrint(index) {
-        const select = document.getElementById(`select-tarefa-${index}`);
-        const printText = document.getElementById(`print-text-${index}`);
-        printText.textContent = select.value || "Não designado";
     }
 
     function gerarEscalaAutomatica() {
@@ -746,7 +706,6 @@
             const select = document.getElementById(`select-tarefa-${index}`);
             if (select) {
                 select.value = operadoresEmbaralhados[index] || "";
-                atualizarTextoPrint(index);
             }
         });
     }
@@ -792,47 +751,81 @@
         alert("Turno completo registrado na Linha do Tempo.");
     }
 
+    // NOVA FUNÇÃO: Gera a imagem puramente em formato vetorial SVG limpo, leve e infinitamente nítido
     function compartilharComoImagem() {
-        const alvo = document.getElementById('areaCompartilhar');
-        const btnAlternativo = document.getElementById('btnDownloadAlternativo');
-        const linkAlternativo = document.getElementById('linkDownloadAlternativo');
-        
-        btnAlternativo.style.display = 'none';
+        const dataInput = document.getElementById('dataEscala').value;
+        const dataFormatada = dataInput ? dataInput.split('-').reverse().join('/') : new Date().toLocaleDateString('pt-BR');
+        const nomeArquivo = `escala-${dataFormatada.replace(/\//g, '-')}.svg`;
 
-        tarefasFixas.forEach((_, index) => atualizarTextoPrint(index));
-        alvo.classList.add('printing-mode');
-
-        html2canvas(alvo, {
-            backgroundColor: "#FDFCFF",
-            scale: 2
-        }).then(canvas => {
-            alvo.classList.remove('printing-mode');
-            
-            const data = document.getElementById('dataEscala').value;
-            const dataFormatada = data ? data.split('-').reverse().join('-') : 'escala';
-            const nomeArquivo = `escala-${dataFormatada}.png`;
-
-            const urlImagem = canvas.toDataURL('image/png');
-            linkAlternativo.href = urlImagem;
-            linkAlternativo.download = nomeArquivo;
-
-            canvas.toBlob(blob => {
-                const arquivo = new File([blob], nomeArquivo, { type: 'image/png' });
-
-                if (navigator.share && navigator.canShare && navigator.canShare({ files: [arquivo] })) {
-                    navigator.share({
-                        files: [arquivo],
-                        title: 'Mapa de Atividades',
-                        text: `Segue escala do dia.`
-                    }).catch(err => {
-                        btnAlternativo.style.display = 'inline-flex';
-                    });
-                } else {
-                    btnAlternativo.style.display = 'inline-flex';
-                    linkAlternativo.click();
-                }
-            }, 'image/png');
+        // Coleta os dados reais selecionados na tabela da tela
+        let itensEscala = [];
+        tarefasFixas.forEach((tarefa, index) => {
+            const select = document.getElementById(`select-tarefa-${index}`);
+            const op = select ? select.value : "";
+            itensEscala.push({ tarefa: tarefa, operador: op || "Não designado" });
         });
+
+        // Montagem do documento de imagem vetorial (SVG)
+        const larguraSvg = 500;
+        const alturaLinha = 52;
+        const topoAltura = 90;
+        const alturaTotalSvg = topoAltura + (itensEscala.length * alturaLinha) + 30;
+
+        let svgConteudo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${larguraSvg} ${alturaTotalSvg}" width="100%" height="100%">
+            <rect width="100%" height="100%" fill="#FDFCFF" rx="16"/>
+            
+            <style>
+                .titulo { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 22px; font-weight: 800; fill: #0061A4; }
+                .sub-titulo { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 13px; font-weight: 600; fill: #535F70; }
+                .cabecalho-txt { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; font-weight: 700; fill: #43474E; text-transform: uppercase; letter-spacing: 0.5px; }
+                .txt-op { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #1A1C1E; }
+                .txt-tarefa { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 13.5px; font-weight: 700; fill: #1A1C1E; }
+            </style>
+
+            <text x="24" y="42" class="titulo">Mapa de Atividades do Dia</text>
+            <text x="24" y="64" class="sub-titulo">Data de Referência: ${dataFormatada}</text>
+
+            <text x="28" y="96" class="cabecalho-txt">Tarefa (Posto)</text>
+            <text x="260" y="96" class="cabecalho-txt">Operador Designado</text>
+            
+            <line x1="20" y1="106" x2="${larguraSvg - 20}" y2="106" stroke="#DFE2EB" stroke-width="1.5"/>
+        `;
+
+        // Renderiza cada linha dinamicamente em coordenadas vetoriais
+        let yAtual = 118;
+        itensEscala.forEach((item) => {
+            svgConteudo += `
+                <rect x="24" y="${yAtual}" width="200" height="34" rx="6" fill="#FEF08A"/>
+                <text x="36" y="${yAtual + 21}" class="txt-tarefa">${item.tarefa}</text>
+
+                <text x="260" y="${yAtual + 22}" class="txt-op">${item.operador}</text>
+
+                <line x1="20" y1="${yAtual + 44}" x2="${larguraSvg - 20}" y2="${yAtual + 44}" stroke="#F1F3F8" stroke-width="1"/>
+            `;
+            yAtual += alturaLinha;
+        });
+
+        svgConteudo += `</svg>`;
+
+        // Converte a string xml em arquivo blob de tipo SVG
+        const blob = new Blob([svgConteudo], { type: 'image/svg+xml;charset=utf-8' });
+        const arquivo = new File([blob], nomeArquivo, { type: 'image/svg+xml' });
+
+        // Compartilhamento Direto (Nativo em Smartphones)
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [arquivo] })) {
+            navigator.share({
+                files: [arquivo],
+                title: 'Escala Vetorial',
+                text: `Segue mapa de atividades (${dataFormatada}) em alta resolução.`
+            }).catch(err => console.log("Envio cancelado", err));
+        } else {
+            // Baixa no PC/Navegador sem suporte nativo automaticamente
+            const link = document.createElement('a');
+            link.download = nomeArquivo;
+            link.href = URL.createObjectURL(blob);
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
     }
 
     function carregarDadosStorage() {
