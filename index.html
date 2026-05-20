@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gestor de Escala Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
@@ -34,7 +34,7 @@
             /* Visual original da imagem (Amarelo) mantido como destaque */
             --legacy-yellow: #FEF08A;
 
-            /* Definições de fonte */
+            /* Definições de fonte com foco em alta legibilidade */
             --font-family: 'Plus Jakarta Sans', sans-serif;
             --font-size-base: 16px;
         }
@@ -53,7 +53,9 @@
             color: var(--md-sys-color-on-background);
             padding: 16px;
             padding-bottom: 32px;
-            line-height: 1.5;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
@@ -68,15 +70,47 @@
         }
 
         header h1 {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 32px;
+            font-weight: 800;
             color: var(--md-sys-color-primary);
-            letter-spacing: -0.5px;
+            letter-spacing: -0.8px;
+            line-height: 1.2;
         }
 
         header p {
-            font-size: 14px;
+            font-size: 15px;
+            font-weight: 500;
             color: var(--md-sys-color-on-surface-variant);
+            margin-top: 4px;
+        }
+
+        /* Botão de Link Externo para o Navegador */
+        .nav-link-block {
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .btn-nav-link {
+            width: 100%;
+            background-color: #F0F4F9;
+            color: var(--md-sys-color-primary);
+            padding: 15px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 14.5px;
+            border: 1px solid var(--md-sys-color-primary-container);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: -0.2px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-nav-link:active {
+            background-color: var(--md-sys-color-primary-container);
         }
 
         /* Botão de Contribuição Mercado Pago */
@@ -93,13 +127,14 @@
             padding: 16px;
             border-radius: 16px;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 15.5px;
             border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            letter-spacing: -0.2px;
             box-shadow: 0 4px 12px rgba(0, 158, 227, 0.2);
             transition: transform 0.2s, box-shadow 0.2s;
         }
@@ -110,13 +145,14 @@
         }
 
         h2 {
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 21px;
+            font-weight: 700;
             color: var(--md-sys-color-on-background);
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 8px;
+            letter-spacing: -0.4px;
         }
 
         .collapsible-header {
@@ -195,7 +231,7 @@
 
         label {
             display: block;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 14px;
             color: var(--md-sys-color-on-surface-variant);
             margin-bottom: 6px;
@@ -205,6 +241,7 @@
             width: 100%;
             font-family: var(--font-family);
             font-size: 16px;
+            font-weight: 600;
             padding: 14px 16px;
             border: 1px solid var(--md-sys-color-outline);
             border-radius: 8px;
@@ -233,8 +270,8 @@
 
         button {
             font-family: var(--font-family);
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 15.5px;
+            font-weight: 700;
             padding: 14px 24px;
             border: none;
             border-radius: 100px;
@@ -269,19 +306,21 @@
             width: 100%;
             margin-top: 16px;
             border: 1px dashed var(--md-sys-color-primary);
+            font-size: 16px;
         }
 
         .btn-share:hover {
             background-color: #D1E4FF;
         }
 
-        /* ADICIONADO: Estilo do botão de download de segurança alternativo */
+        /* Estilo do botão de download de segurança alternativo */
         .btn-download-fallback {
             background-color: #2e7d32;
             color: white;
             width: 100%;
             margin-top: 10px;
             display: none;
+            font-size: 16px;
         }
 
         .btn-download-fallback:hover {
@@ -299,6 +338,7 @@
             padding: 8px 16px;
             font-size: 14px;
             border-radius: 100px;
+            font-weight: 700;
         }
 
         .btn-text-danger:hover {
@@ -308,9 +348,10 @@
         .btn-outline-danger {
             background-color: transparent;
             color: var(--md-sys-color-error);
-            border: 1px solid var(--md-sys-color-error);
+            border: 1px solid var(--md-sys-error);
             padding: 6px 16px;
-            font-size: 13px;
+            font-size: 13.5px;
+            font-weight: 700;
             border-radius: 100px;
         }
 
@@ -333,17 +374,17 @@
         th {
             background-color: #F1F3F8;
             color: var(--md-sys-color-on-surface-variant);
-            font-weight: 600;
-            font-size: 13px;
+            font-weight: 700;
+            font-size: 13.5px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 12px 16px;
+            letter-spacing: 0.6px;
+            padding: 14px 16px;
             text-align: left;
             border-bottom: 1px solid var(--md-sys-color-surface-variant);
         }
 
         td {
-            padding: 8px 12px;
+            padding: 10px 12px;
             border-bottom: 1px solid #F1F3F8;
         }
 
@@ -353,25 +394,29 @@
 
         .tarefa-cell {
             background-color: var(--legacy-yellow);
-            font-weight: 600;
+            font-weight: 700;
             color: #1A1C1E;
             border-radius: 6px;
             padding: 10px 16px;
-            font-size: 14px;
+            font-size: 14.5px;
             display: block;
+            letter-spacing: -0.2px;
         }
 
         table select {
-            padding: 10px 12px;
-            font-size: 15px;
-            border-color: #E0E0E0;
+            padding: 11px 14px;
+            font-size: 15.5px;
+            font-weight: 600;
+            border-color: #D0D4DC;
         }
 
         .select-print-value {
             display: none;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 16px;
             padding: 10px 12px;
             color: var(--md-sys-color-on-surface);
+            letter-spacing: -0.2px;
         }
 
         .printing-mode select { display: none; }
@@ -388,9 +433,9 @@
 
         .day-header {
             background-color: #F1F3F8;
-            padding: 12px 16px;
+            padding: 14px 16px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
             color: var(--md-sys-color-primary);
             cursor: pointer;
             display: flex;
@@ -443,7 +488,7 @@
         }
 
         .history-item-header {
-            padding: 12px 14px;
+            padding: 14px;
             background-color: #FFFFFF;
             cursor: pointer;
             display: flex;
@@ -486,7 +531,7 @@
         }
 
         .history-date {
-            font-size: 14px;
+            font-size: 14.5px;
             color: var(--md-sys-color-on-background);
             font-weight: 700;
         }
@@ -500,8 +545,8 @@
         .history-row-view {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
-            padding: 6px 0;
+            font-size: 14.5px;
+            padding: 8px 0;
             border-bottom: 1px dashed #E0E0E0;
             align-items: center;
         }
@@ -511,8 +556,8 @@
         }
 
         .history-label-task {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 12.5px;
+            font-weight: 700;
             color: #1A1C1E;
             background-color: var(--legacy-yellow);
             padding: 4px 10px;
@@ -520,7 +565,7 @@
         }
 
         .history-label-op {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--md-sys-color-on-surface);
         }
 
@@ -538,6 +583,13 @@
         <h1>Gestor de Escala</h1>
         <p>Distribuição de Tarefas Operacionais</p>
     </header>
+
+    <a href="https://ordnaelrocha.github.io/Escala1/" target="_blank" class="nav-link-block">
+        <button class="btn-nav-link">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+            Abrir Escala no Navegador (GitHub)
+        </button>
+    </a>
 
     <a href="https://mpago.la/21G5Sgn" target="_blank" class="contrib-link">
         <button class="btn-contrib">
@@ -740,13 +792,11 @@
         alert("Turno completo registrado na Linha do Tempo.");
     }
 
-    // MODIFICADO: Sistema inteligente de captura de imagem + Fallback automático para o GitHub Pages
     function compartilharComoImagem() {
         const alvo = document.getElementById('areaCompartilhar');
         const btnAlternativo = document.getElementById('btnDownloadAlternativo');
         const linkAlternativo = document.getElementById('linkDownloadAlternativo');
         
-        // Oculta o botão reserva caso ele estivesse aberto de uma vez anterior
         btnAlternativo.style.display = 'none';
 
         tarefasFixas.forEach((_, index) => atualizarTextoPrint(index));
@@ -762,7 +812,6 @@
             const dataFormatada = data ? data.split('-').reverse().join('-') : 'escala';
             const nomeArquivo = `escala-${dataFormatada}.png`;
 
-            // Prepara o link reserva de download direto imediatamente
             const urlImagem = canvas.toDataURL('image/png');
             linkAlternativo.href = urlImagem;
             linkAlternativo.download = nomeArquivo;
@@ -770,20 +819,16 @@
             canvas.toBlob(blob => {
                 const arquivo = new File([blob], nomeArquivo, { type: 'image/png' });
 
-                // Tenta usar o compartilhamento nativo do celular
                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [arquivo] })) {
                     navigator.share({
                         files: [arquivo],
                         title: 'Mapa de Atividades',
                         text: `Segue escala do dia.`
                     }).catch(err => {
-                        // Se o compartilhamento nativo falhar ou for cancelado no app, exibe o botão verde de download
                         btnAlternativo.style.display = 'inline-flex';
                     });
                 } else {
-                    // Navegadores sem suporte nativo ou WebViews de aplicativos fechados ativam o botão verde
                     btnAlternativo.style.display = 'inline-flex';
-                    // Tenta forçar o clique automático para salvar direto se possível
                     linkAlternativo.click();
                 }
             }, 'image/png');
@@ -804,7 +849,7 @@
         const registros = carregarDadosStorage();
 
         if (registros.length === 0) {
-            lista.innerHTML = `<p style="text-align:center; color:var(--md-sys-color-on-surface-variant); padding:24px 0; font-size:14px;">O histórico está vazio.</p>`;
+            lista.innerHTML = `<p style="text-align:center; color:var(--md-sys-color-on-surface-variant); padding:24px 0; font-size:14px; font-weight: 500;">O histórico está vazio.</p>`;
             return;
         }
 
