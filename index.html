@@ -275,6 +275,19 @@
             background-color: #D1E4FF;
         }
 
+        /* ADICIONADO: Estilo do botão de download de segurança alternativo */
+        .btn-download-fallback {
+            background-color: #2e7d32;
+            color: white;
+            width: 100%;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .btn-download-fallback:hover {
+            background-color: #1b5e20;
+        }
+
         .btn-tonal {
             background-color: var(--md-sys-color-primary-container);
             color: var(--md-sys-color-on-primary-container);
@@ -419,7 +432,7 @@
             padding-right: 4px;
         }
 
-        /* CARD DE TURNO INDIVIDUAL EXPANSÍVEL (MODIFICADO) */
+        /* CARD DE TURNO INDIVIDUAL EXPANSÍVEL */
         .history-item {
             background-color: #F8F9FC;
             border-radius: 12px;
@@ -429,7 +442,6 @@
             overflow: hidden;
         }
 
-        /* Cabeçalho do Turno clicável */
         .history-item-header {
             padding: 12px 14px;
             background-color: #FFFFFF;
@@ -584,8 +596,15 @@
 
         <button class="btn-share" onclick="compartilharComoImagem()">
             <svg class="icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-            Compartilhar como Imagem
+            Compartilhar Escala
         </button>
+
+        <a id="linkDownloadAlternativo" style="text-decoration:none;" download="escala.png">
+            <button id="btnDownloadAlternativo" class="btn-download-fallback">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                Baixar Imagem na Galeria
+            </button>
+        </a>
     </section>
 
     <section class="card" style="padding-bottom: 16px;">
@@ -721,8 +740,15 @@
         alert("Turno completo registrado na Linha do Tempo.");
     }
 
+    // MODIFICADO: Sistema inteligente de captura de imagem + Fallback automático para o GitHub Pages
     function compartilharComoImagem() {
         const alvo = document.getElementById('areaCompartilhar');
+        const btnAlternativo = document.getElementById('btnDownloadAlternativo');
+        const linkAlternativo = document.getElementById('linkDownloadAlternativo');
+        
+        // Oculta o botão reserva caso ele estivesse aberto de uma vez anterior
+        btnAlternativo.style.display = 'none';
+
         tarefasFixas.forEach((_, index) => atualizarTextoPrint(index));
         alvo.classList.add('printing-mode');
 
@@ -731,23 +757,34 @@
             scale: 2
         }).then(canvas => {
             alvo.classList.remove('printing-mode');
-            canvas.toBlob(blob => {
-                const data = document.getElementById('dataEscala').value;
-                const dataFormatada = data ? data.split('-').reverse().join('-') : 'escala';
-                const arquivo = new File([blob], `escala-${dataFormatada}.png`, { type: 'image/png' });
+            
+            const data = document.getElementById('dataEscala').value;
+            const dataFormatada = data ? data.split('-').reverse().join('-') : 'escala';
+            const nomeArquivo = `escala-${dataFormatada}.png`;
 
+            // Prepara o link reserva de download direto imediatamente
+            const urlImagem = canvas.toDataURL('image/png');
+            linkAlternativo.href = urlImagem;
+            linkAlternativo.download = nomeArquivo;
+
+            canvas.toBlob(blob => {
+                const arquivo = new File([blob], nomeArquivo, { type: 'image/png' });
+
+                // Tenta usar o compartilhamento nativo do celular
                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [arquivo] })) {
                     navigator.share({
                         files: [arquivo],
                         title: 'Mapa de Atividades',
                         text: `Segue escala do dia.`
-                    }).catch(err => console.log("Compartilhamento cancelado"));
+                    }).catch(err => {
+                        // Se o compartilhamento nativo falhar ou for cancelado no app, exibe o botão verde de download
+                        btnAlternativo.style.display = 'inline-flex';
+                    });
                 } else {
-                    const link = document.createElement('a');
-                    link.download = `escala-${dataFormatada}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                    alert("Seu navegador não suporta compartilhamento direto. A imagem foi salva nos seus Downloads!");
+                    // Navegadores sem suporte nativo ou WebViews de aplicativos fechados ativam o botão verde
+                    btnAlternativo.style.display = 'inline-flex';
+                    // Tenta forçar o clique automático para salvar direto se possível
+                    linkAlternativo.click();
                 }
             }, 'image/png');
         });
@@ -799,7 +836,6 @@
                     `;
                 });
 
-                // CADA TURNO AGORA É UM BLOCO INDIVIDUAL RETRÁTIL (.history-item)
                 turnosDoDiaHtml += `
                     <div class="history-item" id="turno-${reg.id}">
                         <div class="history-item-header" onclick="alternarTurno('${reg.id}')">
@@ -850,7 +886,6 @@
         }
     }
 
-    // NOVA FUNÇÃO: Abre e fecha a escalação de cada turno individual e centraliza suavemente a visualização
     function alternarTurno(turnoId) {
         const blocoTurno = document.getElementById(`turno-${turnoId}`);
         if (blocoTurno) {
@@ -887,4 +922,3 @@
 
 </body>
 </html>
-
