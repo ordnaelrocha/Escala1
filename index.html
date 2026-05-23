@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Paleta de cores inspirada em Material Design modernos */
+            /* Paleta Padrão: Azul Clássico (Tons Claros de Alta Visualização) */
             --md-sys-color-primary: #0061A4;
             --md-sys-color-on-primary: #FFFFFF;
             --md-sys-color-primary-container: #D1E4FF;
@@ -38,6 +38,31 @@
             --font-size-base: 16px;
         }
 
+        /* Classes de Temas Dinâmicos (Tons Claros com Alta Visualização e Contraste) */
+        body.theme-green {
+            --md-sys-color-primary: #126D34;
+            --md-sys-color-primary-container: #D0E8D5;
+            --md-sys-color-on-primary-container: #00210B;
+            --md-sys-color-background: #F4FBF4;
+            --md-sys-color-surface: #F4FBF4;
+            --md-sys-color-on-background: #002008;
+            --md-sys-color-on-surface: #002008;
+            --md-sys-color-surface-variant: #DCE5DC;
+            --md-sys-color-on-surface-variant: #414942;
+        }
+
+        body.theme-sand {
+            --md-sys-color-primary: #7C5800;
+            --md-sys-color-primary-container: #FFDEA9;
+            --md-sys-color-on-primary-container: #271900;
+            --md-sys-color-background: #FFFBF7;
+            --md-sys-color-surface: #FFFBF7;
+            --md-sys-color-on-background: #201B12;
+            --md-sys-color-on-surface: #201B12;
+            --md-sys-color-surface-variant: #EEE1CF;
+            --md-sys-color-on-surface-variant: #4F4539;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -55,13 +80,14 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
         }
-
+            <style>
         header {
             text-align: center;
             margin-bottom: 24px;
@@ -83,13 +109,50 @@
             margin-top: 4px;
         }
 
-        /* Botão de Link Externo para o Navegador */
-        .nav-link-block {
-            text-decoration: none;
-            display: block;
-            margin-bottom: 12px;
+        /* Crédito Inicial em Destaque */
+        .header-credit {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 14px;
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 100px;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
+        /* Seletor de Tons / Cores */
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0,0,0,0.02);
+            border-radius: 12px;
+            border: 1px solid var(--md-sys-color-surface-variant);
+        }
+
+        .theme-btn {
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid var(--md-sys-color-outline);
+            background: #FFF;
+            color: #1A1C1E;
+            transition: all 0.2s;
+        }
+
+        .theme-btn.active {
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            border-color: var(--md-sys-color-primary);
+        }
+
+        /* Botão de Link Externo para o Navegador Corrigido */
         .btn-nav-link {
             width: 100%;
             background-color: #F0F4F9;
@@ -105,6 +168,7 @@
             justify-content: center;
             gap: 10px;
             letter-spacing: -0.2px;
+            margin-bottom: 12px;
             transition: background-color 0.2s;
         }
 
@@ -153,7 +217,10 @@
             gap: 8px;
             letter-spacing: -0.4px;
         }
-
+    </style>
+</head>
+<body>
+        <style>
         .collapsible-header {
             cursor: pointer;
             user-select: none;
@@ -184,13 +251,14 @@
             margin-bottom: 20px;
             border: 1px solid var(--md-sys-color-surface-variant);
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
-        /* Área específica para captura limpa da imagem */
         .capture-area {
             background-color: var(--md-sys-color-surface);
             padding: 4px;
             border-radius: 8px;
+            transition: background-color 0.3s;
         }
 
         .history-content-wrapper {
@@ -219,14 +287,10 @@
         }
 
         @media (max-width: 480px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+            .form-row { grid-template-columns: 1fr; }
         }
 
-        .input-group {
-            position: relative;
-        }
+        .input-group { position: relative; }
 
         label {
             display: block;
@@ -246,7 +310,7 @@
             border-radius: 8px;
             background-color: transparent;
             color: var(--md-sys-color-on-surface);
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, color 0.2s;
         }
 
         input:focus, select:focus {
@@ -256,15 +320,10 @@
             padding: 13px 15px;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 12px;
-        }
+        .btn-group { display: flex; gap: 12px; }
 
         @media (max-width: 480px) {
-            .btn-group {
-                flex-direction: column;
-            }
+            .btn-group { flex-direction: column; }
         }
 
         button {
@@ -282,24 +341,11 @@
             gap: 8px;
         }
 
-        .btn-group button {
-            flex: 1;
-        }
+        .btn-group button { flex: 1; }
+        button:active { box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .btn-filled { background-color: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); }
+        .btn-filled:hover { box-shadow: 0 2px 8px rgba(0,97,164,0.3); }
 
-        button:active {
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .btn-filled {
-            background-color: var(--md-sys-color-primary);
-            color: var(--md-sys-color-on-primary);
-        }
-
-        .btn-filled:hover {
-            box-shadow: 0 2px 8px rgba(0,97,164,0.3);
-        }
-
-        /* Botão de Compartilhar Destacado e Lindo */
         .btn-share {
             background-color: var(--md-sys-color-primary);
             color: var(--md-sys-color-on-primary);
@@ -309,261 +355,68 @@
             box-shadow: 0 4px 12px rgba(0, 97, 164, 0.2);
         }
 
-        .btn-share:hover {
-            background-color: #004f87;
-        }
+        .btn-share:hover { background-color: #004f87; }
+        .btn-nav-link:hover { background-color: #e2e8f0; }
+        .btn-tonal { background-color: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
+        .btn-text-danger { background-color: transparent; color: var(--md-sys-color-error); padding: 8px 16px; font-size: 14px; border-radius: 100px; font-weight: 700; }
+        .btn-text-danger:hover { background-color: #ffdad9; }
+        .btn-outline-danger { background-color: transparent; color: var(--md-sys-color-error); border: 1px solid var(--md-sys-color-error); padding: 6px 16px; font-size: 13.5px; font-weight: 700; border-radius: 100px; }
+        .btn-outline-danger:hover { background-color: #ffdad9; }
 
-        .btn-tonal {
-            background-color: var(--md-sys-color-primary-container);
-            color: var(--md-sys-color-on-primary-container);
-        }
+        .table-container { overflow-x: auto; border-radius: 8px; border: 1px solid var(--md-sys-color-surface-variant); }
+        table { width: 100%; border-collapse: collapse; min-width: 300px; }
+        th { background-color: rgba(0,0,0,0.04); color: var(--md-sys-color-on-surface-variant); font-weight: 700; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.6px; padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--md-sys-color-surface-variant); }
+        td { padding: 10px 12px; border-bottom: 1px solid rgba(0,0,0,0.03); }
+        table tr:last-child td { border-bottom: none; }
 
-        .btn-text-danger {
-            background-color: transparent;
-            color: var(--md-sys-color-error);
-            padding: 8px 16px;
-            font-size: 14px;
-            border-radius: 100px;
-            font-weight: 700;
-        }
+        .tarefa-cell { background-color: var(--legacy-yellow); font-weight: 700; color: #1A1C1E; border-radius: 6px; padding: 10px 16px; font-size: 14.5px; display: block; letter-spacing: -0.2px; }
+        table select { padding: 11px 14px; font-size: 15.5px; font-weight: 600; border-color: var(--md-sys-color-outline); background-color: rgba(255,255,255,0.6); }
 
-        .btn-text-danger:hover {
-            background-color: #ffdad9;
-        }
+        .day-group { border: 1px solid var(--md-sys-color-surface-variant); border-radius: 12px; margin-bottom: 12px; overflow: hidden; background-color: var(--md-sys-color-surface); }
+        .day-header { background-color: rgba(0,0,0,0.03); padding: 14px 16px; font-weight: 700; font-size: 15px; color: var(--md-sys-color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .day-content { max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out; display: flex; flex-direction: column; gap: 12px; padding: 0 12px; }
+        .day-group.open .day-content { max-height: 3500px; padding: 12px; }
+        .day-chevron { transition: transform 0.2s; }
+        .day-group.open .day-chevron { transform: rotate(180deg); }
 
-        .btn-outline-danger {
-            background-color: transparent;
-            color: var(--md-sys-color-error);
-            border: 1px solid var(--md-sys-color-error);
-            padding: 6px 16px;
-            font-size: 13.5px;
-            font-weight: 700;
-            border-radius: 100px;
-        }
+        .history-list { display: flex; flex-direction: column; gap: 8px; max-height: 650px; overflow-y: scroll; -webkit-overflow-scrolling: touch; padding-right: 4px; }
+        .history-item { background-color: rgba(0,0,0,0.01); border-radius: 12px; display: flex; flex-direction: column; border: 1px solid var(--md-sys-color-surface-variant); overflow: hidden; }
+        .history-item-header { padding: 14px; background-color: rgba(255,255,255,0.7); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; border-bottom: 1px solid transparent; transition: background-color 0.2s; }
+        .history-item.open .history-item-header { border-bottom-color: var(--md-sys-color-surface-variant); background-color: rgba(0,0,0,0.04); }
+        .history-item-content { max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out; padding: 0 14px; }
+        .history-item.open .history-item-content { max-height: 800px; padding: 14px; }
+        .turn-chevron { transition: transform 0.2s; }
+        .history-item.open .turn-chevron { transform: rotate(180deg); }
+        .history-meta { display: flex; align-items: center; gap: 8px; }
+        .history-date { font-size: 14.5px; color: var(--md-sys-color-on-background); font-weight: 700; }
+        .history-table-view { display: flex; flex-direction: column; gap: 6px; }
+        .history-row-view { display: flex; justify-content: space-between; font-size: 14.5px; padding: 8px 0; border-bottom: 1px dashed var(--md-sys-color-surface-variant); align-items: center; }
+        .history-row-view:last-child { border-bottom: none; }
+        .history-label-task { font-size: 12.5px; font-weight: 700; color: #1A1C1E; background-color: var(--legacy-yellow); padding: 4px 10px; border-radius: 4px; }
+        .history-label-op { font-weight: 700; color: var(--md-sys-color-on-surface); }
+        .icon { width: 20px; height: 20px; fill: currentColor; }
 
-        .btn-outline-danger:hover {
-            background-color: #ffdad9;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            border-radius: 8px;
-            border: 1px solid var(--md-sys-color-surface-variant);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 300px;
-        }
-
-        th {
-            background-color: #F1F3F8;
-            color: var(--md-sys-color-on-surface-variant);
-            font-weight: 700;
-            font-size: 13.5px;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            padding: 14px 16px;
-            text-align: left;
-            border-bottom: 1px solid var(--md-sys-color-surface-variant);
-        }
-
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #F1F3F8;
-        }
-
-        table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .tarefa-cell {
-            background-color: var(--legacy-yellow);
-            font-weight: 700;
-            color: #1A1C1E;
-            border-radius: 6px;
-            padding: 10px 16px;
-            font-size: 14.5px;
-            display: block;
-            letter-spacing: -0.2px;
-        }
-
-        table select {
-            padding: 11px 14px;
-            font-size: 15.5px;
-            font-weight: 600;
-            border-color: #D0D4DC;
-        }
-
-        /* ESTILOS PARA O AGRUPAMENTO DIÁRIO */
-        .day-group {
-            border: 1px solid var(--md-sys-color-surface-variant);
-            border-radius: 12px;
-            margin-bottom: 12px;
-            overflow: hidden;
-            background-color: #FDFCFF;
-        }
-
-        .day-header {
-            background-color: #F1F3F8;
-            padding: 14px 16px;
-            font-weight: 700;
-            font-size: 15px;
-            color: var(--md-sys-color-primary);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-        }
-
-        .day-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.25s ease-out;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 0 12px;
-        }
-
-        .day-group.open .day-content {
-            max-height: 3500px;
-            padding: 12px;
-        }
-
-        .day-chevron {
-            transition: transform 0.2s;
-        }
-
-        .day-group.open .day-chevron {
-            transform: rotate(180deg);
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 650px;
-            overflow-y: scroll;
-            -webkit-overflow-scrolling: touch;
-            padding-right: 4px;
-        }
-
-        /* CARD DE TURNO INDIVIDUAL EXPANSÍVEL */
-        .history-item {
-            background-color: #F8F9FC;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #ECEFF1;
-            overflow: hidden;
-        }
-
-        .history-item-header {
-            padding: 14px;
-            background-color: #FFFFFF;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-            border-bottom: 1px solid transparent;
-            transition: background-color 0.2s;
-        }
-
-        .history-item.open .history-item-header {
-            border-bottom-color: #ECEFF1;
-            background-color: #F1F5F9;
-        }
-
-        .history-item-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.25s ease-out;
-            padding: 0 14px;
-        }
-
-        .history-item.open .history-item-content {
-            max-height: 800px;
-            padding: 14px;
-        }
-
-        .turn-chevron {
-            transition: transform 0.2s;
-        }
-
-        .history-item.open .turn-chevron {
-            transform: rotate(180deg);
-        }
-
-        .history-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .history-date {
-            font-size: 14.5px;
-            color: var(--md-sys-color-on-background);
-            font-weight: 700;
-        }
-
-        .history-table-view {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .history-row-view {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14.5px;
-            padding: 8px 0;
-            border-bottom: 1px dashed #E0E0E0;
-            align-items: center;
-        }
-
-        .history-row-view:last-child {
-            border-bottom: none;
-        }
-
-        .history-label-task {
-            font-size: 12.5px;
-            font-weight: 700;
-            color: #1A1C1E;
-            background-color: var(--legacy-yellow);
-            padding: 4px 10px;
-            border-radius: 4px;
-        }
-
-        .history-label-op {
-            font-weight: 700;
-            color: var(--md-sys-color-on-surface);
-        }
-
-        .icon {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
+        footer { text-align: center; margin-top: 32px; padding: 16px; border-top: 1px dashed var(--md-sys-color-surface-variant); }
+        .signature { display: inline-block; background: linear-gradient(135deg, var(--md-sys-color-primary-container), #E2F1FF); color: var(--md-sys-color-on-primary-container); padding: 8px 20px; border-radius: 100px; font-size: 13.5px; font-weight: 700; letter-spacing: 0.2px; box-shadow: 0 2px 6px rgba(0,97,164,0.08); border: 1px solid rgba(0,97,164,0.15); }
+            </style>
+        <div class="container">
 
     <header>
         <h1>Gestor de Escala</h1>
         <p>Distribuição de Tarefas Operacionais</p>
+        <span class="header-credit">📱 Aplicativo feito por Leandro Rocha</span>
     </header>
 
-    <a href="https://ordnaelrocha.github.io/Escala1/" target="_blank" class="nav-link-block">
-        <button class="btn-nav-link">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-            Abrir Escala no Navegador (GitHub)
-        </button>
-    </a>
+    <div class="theme-selector">
+        <button class="theme-btn active" id="btn-theme-blue" onclick="mudarTomClaro('blue')">☀️ Azul Clássico</button>
+        <button class="theme-btn" id="btn-theme-green" onclick="mudarTomClaro('green')">🌿 Verde Suave</button>
+        <button class="theme-btn" id="btn-theme-sand" onclick="mudarTomClaro('sand')">⏳ Areia Conforto</button>
+    </div>
+
+    <button class="btn-nav-link" onclick="abrirNoNavegador()">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+        Abrir Escala no Navegador (GitHub)
+    </button>
 
     <a href="https://mpago.la/21G5Sgn" target="_blank" class="contrib-link">
         <button class="btn-contrib">
@@ -622,7 +475,7 @@
 
         <button class="btn-share" onclick="compartilharComoImagem()">
             <svg class="icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-            Compartilhar Escala (SVG)
+            Compartilhar Imagem da Escala
         </button>
     </section>
 
@@ -642,31 +495,22 @@
                     Limpar Tudo
                 </button>
             </div>
-            <div class="history-list" id="listaHistorico">
-                </div>
+            <div class="history-list" id="listaHistorico"></div>
         </div>
     </section>
 
-    </div>
-    <script>
+    <footer>
+        <span class="signature">🛠️ Desenvolvido por Leandro Rocha</span>
+    </footer>
+
+        </div>
+        <script>
     const tarefasFixas = [
-        "CARREGAMENTO 1°",
-        "JOKER",
-        "PATOLA",
-        "PATOLA",
-        "NT",
-        "PUXADA PERIFERICO",
-        "PUXADA DEDICADO"
+        "CARREGAMENTO 1°", "JOKER", "PATOLA", "PATOLA", "NT", "PUXADA PERIFERICO", "PUXADA DEDICADO"
     ];
 
     const operadoresPadrao = [
-        "NUBIA",
-        "RYAN",
-        "MARQUINHO",
-        "LEANDRO",
-        "ANDREA",
-        "MARCAO",
-        "JAMIL"
+        "NUBIA", "RYAN", "MARQUINHO", "LEANDRO", "ANDREA", "MARCAO", "JAMIL"
     ];
 
     document.getElementById('dataEscala').valueAsDate = new Date();
@@ -675,6 +519,25 @@
         renderizarTabelaBase();
         carregarHistorico();
     };
+
+    function mudarTomClaro(tema) {
+        document.body.classList.remove('theme-green', 'theme-sand');
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+
+        if (tema === 'green') {
+            document.body.classList.add('theme-green');
+            document.getElementById('btn-theme-green').classList.add('active');
+        } else if (tema === 'sand') {
+            document.body.classList.add('theme-sand');
+            document.getElementById('btn-theme-sand').classList.add('active');
+        } else {
+            document.getElementById('btn-theme-blue').classList.add('active');
+        }
+    }
+
+    function abrirNoNavegador() {
+        window.open("https://ordnaelrocha.github.io/Escala1/", "_blank");
+    }
 
     function renderizarTabelaBase() {
         const tbody = document.getElementById('tabelaEscala');
@@ -689,11 +552,7 @@
             tbody.innerHTML += `
                 <tr>
                     <td><span class="tarefa-cell">${tarefa}</span></td>
-                    <td>
-                        <select id="select-tarefa-${index}">
-                            ${options}
-                        </select>
-                    </td>
+                    <td><select id="select-tarefa-${index}">${options}</select></td>
                 </tr>
             `;
         });
@@ -701,12 +560,9 @@
 
     function gerarEscalaAutomatica() {
         let operadoresEmbaralhados = [...operadoresPadrao].sort(() => Math.random() - 0.5);
-        
         tarefasFixas.forEach((tarefa, index) => {
             const select = document.getElementById(`select-tarefa-${index}`);
-            if (select) {
-                select.value = operadoresEmbaralhados[index] || "";
-            }
+            if (select) select.value = operadoresEmbaralhados[index] || "";
         });
     }
 
@@ -714,248 +570,167 @@
         const data = document.getElementById('dataEscala').value;
         const horario = document.getElementById('horarioEscala').value;
 
-        if (!data || !horario) {
-            alert("Por favor, preencha data e horário do turno.");
-            return;
-        }
+        if (!data || !horario) { alert("Por favor, preencha data e horário do turno."); return; }
 
         const dataFormatada = data.split('-').reverse().join('/');
         let registros = carregarDadosStorage();
-        
         let designacoesDoTurno = [];
+
         tarefasFixas.forEach((tarefa, index) => {
             const select = document.getElementById(`select-tarefa-${index}`);
-            if (select) {
-                const operador = select.value;
-                if (operador) {
-                    designacoesDoTurno.push({ tarefa: tarefa, operador: operador });
-                }
-            }
+            if (select && select.value) designacoesDoTurno.push({ tarefa: tarefa, operador: select.value });
         });
 
-        if (designacoesDoTurno.length === 0) {
-            alert("Selecione pelo menos um operador antes de salvar.");
-            return;
-        }
+        if (designacoesDoTurno.length === 0) { alert("Selecione pelo menos um operador."); return; }
 
-        registros.push({
-            id: Date.now(),
-            timeStamp: Date.now(),
-            data: dataFormatada,
-            horario: horario,
-            escalaCompleta: designacoesDoTurno
-        });
-
+        registros.push({ id: Date.now(), timeStamp: Date.now(), data: dataFormatada, horario: horario, escalaCompleta: designacoesDoTurno });
         salvarDadosStorage(registros);
         carregarHistorico();
-        alert("Turno completo registrado na Linha do Tempo.");
+        alert("Turno gravado na Linha do Tempo.");
     }
 
-    // NOVA FUNÇÃO: Gera a imagem puramente em formato vetorial SVG limpo, leve e infinitamente nítido
+    // CORREÇÃO E COMPARTILHAMENTO DE IMAGEM PREENCHIDA (SEM BRANCO)
     function compartilharComoImagem() {
         const dataInput = document.getElementById('dataEscala').value;
         const dataFormatada = dataInput ? dataInput.split('-').reverse().join('/') : new Date().toLocaleDateString('pt-BR');
-        const nomeArquivo = `escala-${dataFormatada.replace(/\//g, '-')}.svg`;
+        const nomeArquivo = `escala-${dataFormatada.replace(/\//g, '-')}.png`;
 
-        // Coleta os dados reais selecionados na tabela da tela
         let itensEscala = [];
         tarefasFixas.forEach((tarefa, index) => {
             const select = document.getElementById(`select-tarefa-${index}`);
-            const op = select ? select.value : "";
-            itensEscala.push({ tarefa: tarefa, operador: op || "Não designado" });
+            itensEscala.push({ tarefa: tarefa, operador: select ? select.value || "Não designado" : "Não designado" });
         });
 
-        // Montagem do documento de imagem vetorial (SVG)
         const larguraSvg = 500;
         const alturaLinha = 52;
         const topoAltura = 90;
         const alturaTotalSvg = topoAltura + (itensEscala.length * alturaLinha) + 30;
 
-        let svgConteudo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${larguraSvg} ${alturaTotalSvg}" width="100%" height="100%">
-            <rect width="100%" height="100%" fill="#FDFCFF" rx="16"/>
-            
-            <style>
-                .titulo { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 22px; font-weight: 800; fill: #0061A4; }
-                .sub-titulo { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 13px; font-weight: 600; fill: #535F70; }
-                .cabecalho-txt { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; font-weight: 700; fill: #43474E; text-transform: uppercase; letter-spacing: 0.5px; }
-                .txt-op { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #1A1C1E; }
-                .txt-tarefa { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 13.5px; font-weight: 700; fill: #1A1C1E; }
-            </style>
+        const estilosComputados = getComputedStyle(document.body);
+        const corPrimaria = estilosComputados.getPropertyValue('--md-sys-color-primary').trim() || '#0061A4';
+        const corFundo = estilosComputados.getPropertyValue('--md-sys-color-background').trim() || '#FDFCFF';
+        const corFonte = estilosComputados.getPropertyValue('--md-sys-color-on-background').trim() || '#1A1C1E';
+        const corSubtitulo = estilosComputados.getPropertyValue('--md-sys-color-on-surface-variant').trim() || '#535F70';
 
+        // Usando fontes nativas (Arial, sans-serif) para preenchimento imediato sem tela branca
+        let svgConteudo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${larguraSvg} ${alturaTotalSvg}" width="${larguraSvg}" height="${alturaTotalSvg}">
+            <rect width="100%" height="100%" fill="${corFundo}"/>
+            <style>
+                .titulo { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; fill: ${corPrimaria}; }
+                .sub-titulo { font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; fill: ${corSubtitulo}; }
+                .cabecalho-txt { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: ${corSubtitulo}; text-transform: uppercase; letter-spacing: 0.5px; }
+                .txt-op { font-family: Arial, sans-serif; font-size: 15px; font-weight: bold; fill: ${corFonte}; }
+                .txt-tarefa { font-family: Arial, sans-serif; font-size: 13.5px; font-weight: bold; fill: #1A1C1E; }
+            </style>
             <text x="24" y="42" class="titulo">Mapa de Atividades do Dia</text>
             <text x="24" y="64" class="sub-titulo">Data de Referência: ${dataFormatada}</text>
-
             <text x="28" y="96" class="cabecalho-txt">Tarefa (Posto)</text>
             <text x="260" y="96" class="cabecalho-txt">Operador Designado</text>
-            
             <line x1="20" y1="106" x2="${larguraSvg - 20}" y2="106" stroke="#DFE2EB" stroke-width="1.5"/>
         `;
 
-        // Renderiza cada linha dinamicamente em coordenadas vetoriais
         let yAtual = 118;
         itensEscala.forEach((item) => {
             svgConteudo += `
                 <rect x="24" y="${yAtual}" width="200" height="34" rx="6" fill="#FEF08A"/>
                 <text x="36" y="${yAtual + 21}" class="txt-tarefa">${item.tarefa}</text>
-
                 <text x="260" y="${yAtual + 22}" class="txt-op">${item.operador}</text>
-
                 <line x1="20" y1="${yAtual + 44}" x2="${larguraSvg - 20}" y2="${yAtual + 44}" stroke="#F1F3F8" stroke-width="1"/>
             `;
             yAtual += alturaLinha;
         });
-
         svgConteudo += `</svg>`;
 
-        // Converte a string xml em arquivo blob de tipo SVG
-        const blob = new Blob([svgConteudo], { type: 'image/svg+xml;charset=utf-8' });
-        const arquivo = new File([blob], nomeArquivo, { type: 'image/svg+xml' });
+        const blobSvg = new Blob([svgConteudo], { type: 'image/svg+xml;charset=utf-8' });
+        const urlSvg = URL.createObjectURL(blobSvg);
+        const imagemParaCanvas = new Image();
 
-        // Compartilhamento Direto (Nativo em Smartphones)
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [arquivo] })) {
-            navigator.share({
-                files: [arquivo],
-                title: 'Escala Vetorial',
-                text: `Segue mapa de atividades (${dataFormatada}) em alta resolução.`
-            }).catch(err => console.log("Envio cancelado", err));
-        } else {
-            // Baixa no PC/Navegador sem suporte nativo automaticamente
-            const link = document.createElement('a');
-            link.download = nomeArquivo;
-            link.href = URL.createObjectURL(blob);
-            link.click();
-            URL.revokeObjectURL(link.href);
-        }
+        imagemParaCanvas.onload = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = larguraSvg;
+            canvas.height = alturaTotalSvg;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(imagemParaCanvas, 0, 0);
+            URL.revokeObjectURL(urlSvg);
+
+            // Conversão segura do canvas final diretamente para arquivo PNG
+            canvas.toBlob(function(blobPng) {
+                const arquivoFinalPng = new File([blobPng], nomeArquivo, { type: 'image/png' });
+
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [arquivoFinalPng] })) {
+                    navigator.share({
+                        files: [arquivoFinalPng],
+                        title: 'Escala de Atividades',
+                        text: `Segue o mapa de atividades completo para o dia ${dataFormatada}.`
+                    })
+                    .catch(() => dispararDownloadDireto(canvas.toDataURL('image/png'), nomeArquivo));
+                } else {
+                    dispararDownloadDireto(canvas.toDataURL('image/png'), nomeArquivo);
+                }
+            }, 'image/png');
+        };
+        imagemParaCanvas.src = urlSvg;
     }
 
-    function carregarDadosStorage() {
-        const dados = localStorage.getItem('historicoEscalaPlayStore');
-        return dados ? JSON.parse(dados) : [];
+    function dispararDownloadDireto(dataUrl, nomeArquivo) {
+        const link = document.createElement('a');
+        link.download = nomeArquivo;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
-    function salvarDadosStorage(dados) {
-        localStorage.setItem('historicoEscalaPlayStore', JSON.stringify(dados));
-    }
+    function carregarDadosStorage() { const dados = localStorage.getItem('historicoEscalaPlayStore'); return dados ? JSON.parse(dados) : []; }
+    function salvarDadosStorage(dados) { localStorage.setItem('historicoEscalaPlayStore', JSON.stringify(dados)); }
 
     function carregarHistorico() {
         const lista = document.getElementById('listaHistorico');
         const registros = carregarDadosStorage();
-
-        if (registros.length === 0) {
-            lista.innerHTML = `<p style="text-align:center; color:var(--md-sys-color-on-surface-variant); padding:24px 0; font-size:14px; font-weight: 500;">O histórico está vazio.</p>`;
-            return;
-        }
-
+        if (registros.length === 0) { lista.innerHTML = `<p style="text-align:center; color:var(--md-sys-color-on-surface-variant); padding:24px 0; font-size:14px; font-weight: 500;">O histórico está vazio.</p>`; return; }
         registros.sort((a,b) => b.timeStamp - a.timeStamp);
 
         const gruposPorDia = {};
-        registros.forEach(reg => {
-            if (!gruposPorDia[reg.data]) {
-                gruposPorDia[reg.data] = [];
-            }
-            gruposPorDia[reg.data].push(reg);
-        });
-
+        registros.forEach(reg => { if (!gruposPorDia[reg.data]) gruposPorDia[reg.data] = []; gruposPorDia[reg.data].push(reg); });
         lista.innerHTML = "";
 
         Object.keys(gruposPorDia).forEach(dia => {
             let turnosDoDiaHtml = "";
-            
             gruposPorDia[dia].forEach(reg => {
                 let linesTableHtml = "";
                 let listaDePostos = reg.escalaCompleta || [{ tarefa: reg.tarefa, operador: reg.operador }];
-
-                listaDePostos.forEach(item => {
-                    linesTableHtml += `
-                        <div class="history-row-view">
-                            <span class="history-label-task">${item.tarefa}</span>
-                            <span class="history-label-op">${item.operador}</span>
-                        </div>
-                    `;
-                });
+                listaDePostos.forEach(item => { linesTableHtml += `<div class="history-row-view"><span class="history-label-task">${item.tarefa}</span><span class="history-label-op">${item.operador}</span></div>`; });
 
                 turnosDoDiaHtml += `
                     <div class="history-item" id="turno-${reg.id}">
                         <div class="history-item-header" onclick="alternarTurno('${reg.id}')">
-                            <div class="history-meta">
-                                <span class="history-date">⏰ Turno das ${reg.horario}</span>
-                            </div>
+                            <div class="history-meta"><span class="history-date">⏰ Turno das ${reg.horario}</span></div>
                             <div style="display:flex; align-items:center; gap:12px;">
-                                <button class="btn-text-danger" style="padding:4px 8px; font-size:12px;" onclick="event.stopPropagation(); deletarRegistro(${reg.id})">
-                                     Excluir
-                                </button>
+                                <button class="btn-text-danger" style="padding:4px 8px; font-size:12px;" onclick="event.stopPropagation(); deletarRegistro(${reg.id})">Excluir</button>
                                 <svg class="icon turn-chevron" viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
                             </div>
                         </div>
-                        <div class="history-item-content">
-                            <div class="history-table-view">
-                                ${linesTableHtml}
-                            </div>
-                        </div>
-                    </div>
-                `;
+                        <div class="history-item-content"><div class="history-table-view">${linesTableHtml}</div></div>
+                    </div>`;
             });
 
             const idUnicaDia = dia.replace(/\//g, '-');
-
             lista.innerHTML += `
                 <div class="day-group" id="grupo-${idUnicaDia}">
                     <div class="day-header" onclick="alternarDia('${idUnicaDia}')">
                         <span>📅 ${dia} (${gruposPorDia[dia].length} Turno(s))</span>
                         <svg class="icon day-chevron" viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
                     </div>
-                    <div class="day-content">
-                        ${turnosDoDiaHtml}
-                    </div>
-                </div>
-            `;
+                    <div class="day-content">${turnosDoDiaHtml}</div>
+                </div>`;
         });
     }
 
-    function alternarDia(diaId) {
-        const containerDia = document.getElementById(`grupo-${diaId}`);
-        if (containerDia) {
-            containerDia.classList.toggle('open');
-            if (containerDia.classList.contains('open')) {
-                setTimeout(() => {
-                    containerDia.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 280);
-            }
-        }
-    }
-
-    function alternarTurno(turnoId) {
-        const blocoTurno = document.getElementById(`turno-${turnoId}`);
-        if (blocoTurno) {
-            blocoTurno.classList.toggle('open');
-            if (blocoTurno.classList.contains('open')) {
-                setTimeout(() => {
-                    blocoTurno.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 280);
-            }
-        }
-    }
-
-    function deletarRegistro(id) {
-        if (confirm("Deseja remover este turno inteiro do histórico?")) {
-            let registros = carregarDadosStorage();
-            registros = registros.filter(reg => reg.id !== id);
-            salvarDadosStorage(registros);
-            carregarHistorico();
-        }
-    }
-
-    function limparHistoricoTodo() {
-        if (confirm("⚠️ ATENÇÃO: Deseja apagar TODO o histórico de escalas? Esta ação não pode ser desfeita.")) {
-            salvarDadosStorage([]);
-            carregarHistorico();
-        }
-    }
-
-    function alternarHistorico() {
-        const titulo = document.getElementById('historicoTitulo');
-        titulo.classList.toggle('collapsed');
-    }
+    function alternarDia(diaId) { const containerDia = document.getElementById(`grupo-${diaId}`); if (containerDia) { containerDia.classList.toggle('open'); if (containerDia.classList.contains('open')) { setTimeout(() => { containerDia.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 280); } } }
+    function alternarTurno(turnoId) { const blocoTurno = document.getElementById(`turno-${turnoId}`); if (blocoTurno) { blocoTurno.classList.toggle('open'); if (blocoTurno.classList.contains('open')) { setTimeout(() => { blocoTurno.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 280); } } }
+    function deletarRegistro(id) { if (confirm("Deseja remover este turno?")) { let registros = carregarDadosStorage(); registros = registros.filter(reg => reg.id !== id); salvarDadosStorage(registros); carregarHistorico(); } }
+    function limparHistoricoTodo() { if (confirm("Deseja apagar TODO o histórico?")) { salvarDadosStorage([]); carregarHistorico(); } }
+    function alternarHistorico() { const titulo = document.getElementById('historicoTitulo'); titulo.classList.toggle('collapsed'); }
 </script>
 
 </body>
